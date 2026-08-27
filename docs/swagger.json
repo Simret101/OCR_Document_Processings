@@ -1,0 +1,80 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/api/v1/upload": {
+            "post": {
+                "description": "Uploads a document. Text is extracted (txt, md, csv, json, PDF, DOCX), summarized with AI, and indexed into the tenant knowledge base for semantic search.",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Documents"
+                ],
+                "summary": "Upload document",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "Document file",
+                        "name": "upload",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "document uploaded",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/aidoc_internal_response.ErrorResponseFormat"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/aidoc_internal_response.ErrorResponseFormat"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "aidoc_internal_response.ErrorResponseFormat": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "data": {},
+                "message": {
+                    "type": "string"
+                },
+                "metadata": {
+                    "$ref": "#/definitions/aidoc_internal_response.Metadata"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "aidoc_internal_response.Metadata": {
+            "type": "object",
+            "properties": {
+                "server_timestamp": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

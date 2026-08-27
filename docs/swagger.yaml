@@ -1,0 +1,53 @@
+definitions:
+  aidoc_internal_response.ErrorResponseFormat:
+    properties:
+      code:
+        type: string
+      data: {}
+      message:
+        type: string
+      metadata:
+        $ref: '#/definitions/aidoc_internal_response.Metadata'
+      status:
+        type: string
+    type: object
+  aidoc_internal_response.Metadata:
+    properties:
+      server_timestamp:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /api/v1/upload:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Uploads a document. Text is extracted (txt, md, csv, json, PDF,
+        DOCX), summarized with AI, and indexed into the tenant knowledge base for
+        semantic search.
+      parameters:
+      - description: Document file
+        in: formData
+        name: upload
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: document uploaded
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/aidoc_internal_response.ErrorResponseFormat'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/aidoc_internal_response.ErrorResponseFormat'
+      summary: Upload document
+      tags:
+      - Documents
+swagger: "2.0"
